@@ -22,13 +22,13 @@ public class cadastroDeProduto {
         Produto p = produtoDao.buscarPorId(1l);
         System.out.println(p.getPreco());
 
-        List<Produto> todos = produtoDao.buscarTodos();
-        todos.forEach(p2 -> System.out.println(p.getNome()));
+        BigDecimal precoDoProduto = produtoDao.buscarPrecoDoProdutoComNome("Xiaomi Redmi");
+        System.out.println("Valor: " + precoDoProduto);
     }
 
     private static void cadastrarProduto() {
         Categoria celulares = new Categoria("CELULARES");
-        Produto celular = new Produto("Xiaomi", "Celular tela amoled, 16Gb Ram e 512Gb de armazenamento",
+        Produto celular = new Produto("Xiaomi Redmi", "Celular tela amoled, 16Gb Ram e 512Gb de armazenamento",
                 new BigDecimal("800"), celulares);
 
         EntityManager em = JPAUtil.getEntityManager();
