@@ -24,13 +24,16 @@ public class CadastroDePedido {
         em.getTransaction().begin();
 
         Pedido pedido = new Pedido(cliente);
-        pedido.adicionarItem(new ItemPedido(10, pedido, produto));
+        pedido.adicionarItem(new ItemPedido(2, pedido, produto));
 
         PedidoDao pedidoDao = new PedidoDao(em);
         pedidoDao.cadastrar(pedido);
 
         em.getTransaction().commit();
-        em.close();
+
+
+        BigDecimal totalVendido = pedidoDao.valorTotalVendido();
+        System.out.println("VALOR TOTAL: " + totalVendido);
     }
     private static void popularBancoDeDados() {
         Categoria celulares = new Categoria("CELULARES");
