@@ -6,45 +6,22 @@ import br.com.alura.loja.dao.PedidoDao;
 import br.com.alura.loja.dao.ProdutoDao;
 import br.com.alura.loja.modelo.*;
 import br.com.alura.loja.util.JPAUtil;
-import br.com.alura.loja.vo.RelatorioDeVendasVo;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.util.List;
 
-public class CadastroDePedido {
+public class PerformanceConsultas {
+
 
     public static void main(String[] args) {
         popularBancoDeDados();
         EntityManager em = JPAUtil.getEntityManager();
-        ProdutoDao produtoDao = new ProdutoDao(em);
-        ClienteDao clienteDao = new ClienteDao(em);
-
-        Produto produto = produtoDao.buscarPorId(1l);
-        Produto produto2 = produtoDao.buscarPorId(2l);
-        Produto produto3 = produtoDao.buscarPorId(3l);
-        Cliente cliente = clienteDao.buscarPorId(1l);
-
-        em.getTransaction().begin();
-
-        Pedido pedido = new Pedido(cliente);
-        pedido.adicionarItem(new ItemPedido(10, pedido, produto));
-        pedido.adicionarItem(new ItemPedido(40, pedido, produto2));
-
-        Pedido pedido2 = new Pedido(cliente);
-        pedido.adicionarItem(new ItemPedido(2, pedido, produto3));
-
+        Pedido pedido = em.find(Pedido.class, 1l);
         PedidoDao pedidoDao = new PedidoDao(em);
-        pedidoDao.cadastrar(pedido);
-        pedidoDao.cadastrar(pedido2);
+        pedidoDao.buscarPedidoComCliente(1l);
 
-        em.getTransaction().commit();
-
-        BigDecimal totalVendido = pedidoDao.valorTotalVendido();
-        System.out.println("VALOR TOTAL: " + totalVendido);
-
-        List<RelatorioDeVendasVo> relatorio = pedidoDao.relatorioDeVendas();
-        relatorio.forEach(System.out::println);
+        em.close();
+        System.out.println(pedido.getCliente().getNome());
     }
     private static void popularBancoDeDados() {
         Categoria celulares = new Categoria("CELULARES");
@@ -73,6 +50,22 @@ public class CadastroDePedido {
         produtoDao.cadastrar(celular);
         produtoDao.cadastrar(videogame);
         produtoDao.cadastrar(macbook);
+
+        Produto produto = produtoDao.buscarPorId(1l);
+        Produto produto2 = produtoDao.buscarPorId(2l);
+        Produto produto3 = produtoDao.buscarPorId(3l);
+
+        Pedido pedido = new Pedido(cliente);
+        pedido.adicionarItem(new ItemPedido(10, pedido, produto));
+        pedido.adicionarItem(new ItemPedido(40, pedido, produto2));
+
+        Pedido pedido2 = new Pedido(cliente);
+        pedido.adicionarItem(new ItemPedido(2, pedido, produto3));
+
+        PedidoDao pedidoDao = new PedidoDao(em);
+        pedidoDao.cadastrar(pedido);
+        pedidoDao.cadastrar(pedido2);
+
 
         em.getTransaction().commit();
         em.close();
