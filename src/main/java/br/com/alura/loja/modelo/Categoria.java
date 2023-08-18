@@ -12,13 +12,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Categoria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
+public class Categoria{
+
+    @EmbeddedId
+    private CategoriaId id;
 
     public Categoria(String nome) {
-        this.nome = nome;
+        this.id = new CategoriaId(nome, "xpto");
+    }
+
+    public String getNome( ) {
+        return this.id.getNome();
     }
 }

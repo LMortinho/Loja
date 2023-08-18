@@ -18,7 +18,7 @@ public class PerformanceConsultas {
         popularBancoDeDados();
         EntityManager em = JPAUtil.getEntityManager();
         ProdutoDao produtoDao = new ProdutoDao(em);
-        produtoDao.buscarPorParametrosComCriteria(null, null, LocalDate.now());
+        produtoDao.buscarPorParametrosComCriteria("PS5", null, LocalDate.now());
     }
     private static void popularBancoDeDados() {
         Categoria celulares = new Categoria("CELULARES");
