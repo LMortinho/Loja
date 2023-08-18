@@ -9,6 +9,7 @@ import br.com.alura.loja.util.JPAUtil;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class PerformanceConsultas {
 
@@ -16,12 +17,8 @@ public class PerformanceConsultas {
     public static void main(String[] args) {
         popularBancoDeDados();
         EntityManager em = JPAUtil.getEntityManager();
-        Pedido pedido = em.find(Pedido.class, 1l);
-        PedidoDao pedidoDao = new PedidoDao(em);
-        pedidoDao.buscarPedidoComCliente(1l);
-
-        em.close();
-        System.out.println(pedido.getCliente().getNome());
+        ProdutoDao produtoDao = new ProdutoDao(em);
+        produtoDao.buscarPorParametrosComCriteria(null, null, LocalDate.now());
     }
     private static void popularBancoDeDados() {
         Categoria celulares = new Categoria("CELULARES");
